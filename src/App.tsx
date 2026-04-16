@@ -1,3 +1,5 @@
+import "./app/style/index.pcss";
+
 import {type FormEvent, useCallback, useMemo, useState} from 'react'
 import {
   FORM_LABELS,
@@ -16,6 +18,9 @@ import {
   pickRandomVerb,
 } from './lib/quiz'
 import './App.css'
+
+import {Button} from "./shared/ui/button";
+import {Header} from "./shared/ui/header";
 
 type RoundState =
   | { status: 'idle' }
@@ -90,22 +95,11 @@ export default function App() {
 
   return (
     <div className="app">
-      <header className="header">
-        <h1 className="title">Irregular verbs</h1>
-        <p className="subtitle">
-          Random drills: multiple choice, typing, and phonemic transcription
-        </p>
-        <div className="stats" aria-live="polite">
-          <span className="stats__score">
-            Score: {score.right}/{score.total}
-          </span>
-          {score.total > 0 && (
-            <span className="stats__pct">
-              {Math.round((100 * score.right) / score.total)}% correct
-            </span>
-          )}
-        </div>
-      </header>
+      <Header
+         title={"Irregular verbs"}
+         subtitle={"Random drills: multiple choice, typing, and phonemic transcription"}
+         score={score}
+      />
 
       <main className="card">
         <p className="exercise-type">{title}</p>
@@ -157,15 +151,13 @@ export default function App() {
         {round.kind === 'choice' && round.options && (
           <div className="choices" role="group" aria-label="Answer options">
             {round.options.map((opt) => (
-              <button
-                key={opt}
-                type="button"
-                className="choice-btn"
-                disabled={roundState.status !== 'idle'}
-                onClick={() => onChooseOption(opt)}
-              >
-                {opt}
-              </button>
+               <Button
+                  key={opt}
+                  extraCN={{ isChoice: true }}
+                  disabled={roundState.status !== 'idle'}
+                  onClick={() => onChooseOption(opt)}
+                  label={opt}
+               />
             ))}
           </div>
         )}
@@ -185,13 +177,12 @@ export default function App() {
               disabled={roundState.status !== 'idle'}
               placeholder="Type the verb form…"
             />
-            <button
-              type="submit"
-              className="primary-btn"
-              disabled={roundState.status !== 'idle' || !textInput.trim()}
-            >
-              Check
-            </button>
+            <Button
+               extraCN={{ isPrimary: true }}
+               disabled={roundState.status !== 'idle' || !textInput.trim()}
+               label={"Check"}
+               type={"submit"}
+            />
           </form>
         )}
 
@@ -208,9 +199,11 @@ export default function App() {
                 Answer: <strong>{roundState.reveal}</strong>
               </p>
             )}
-            <button type="button" className="primary-btn" onClick={nextRound}>
-              Next exercise
-            </button>
+            <Button
+               extraCN={{ isPrimary: true }}
+               label={"Next exercise"}
+               onClick={nextRound}
+            />
           </div>
         )}
       </main>

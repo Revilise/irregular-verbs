@@ -1,0 +1,53 @@
+.btn {
+  font: inherit;
+  
+  
+  &--isPrimary {
+    font-weight: 600;
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: var(--gradient-primary);
+    color: var(--color-white);
+    box-shadow: 0 2px 12px var(--color-accent-button-shadow);
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.05);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+
+  &--isChoice {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-elevated);
+    color: var(--color-text-heading);
+    cursor: pointer;
+    transition:
+      border-color 0.15s,
+      background 0.15s,
+      transform 0.08s;
+
+    &:hover:not(:disabled) {
+      border-color: var(--color-accent-border);
+      background: var(--color-accent-bg);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.99);
+    }
+
+    &:disabled {
+      opacity: 0.65;
+      cursor: default;
+    }
+  }
+}

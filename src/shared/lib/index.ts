@@ -1,0 +1,1 @@
+export { useBEM } from "./bem";
