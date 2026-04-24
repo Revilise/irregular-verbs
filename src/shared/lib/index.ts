@@ -1,1 +1,1 @@
-export { useBEM } from "./bem";
+export { useBEM } from "@shared/lib/bem";

@@ -1,218 +1,105 @@
-import "./app/style/index.pcss";
+import "@app/style/index.pcss";
 
-import {type FormEvent, useCallback, useMemo, useState} from 'react'
-import {
-  FORM_LABELS,
-  IRREGULAR_VERBS,
-  type IrregularVerb,
-  type VerbFormIndex,
-  getForm,
-} from './data/verbs'
-import {
-  type ExerciseKind,
-  buildChoiceOptions,
-  formsMatch,
-  pickRandomExerciseKind,
-  pickRandomFormIndex,
-  pickPromptShown,
-  pickRandomVerb,
-} from './lib/quiz'
-import './App.css'
+import { type FormEvent } from "react";
+import { FORM_LABELS, getForm } from "@data/verbs";
+import "./App.css";
 
-import {Button} from "./shared/ui/button";
-import {Header} from "./shared/ui/header";
-
-type RoundState =
-  | { status: 'idle' }
-  | { status: 'answered'; correct: boolean; reveal: string }
-
-interface Round {
-  kind: ExerciseKind
-  verb: IrregularVerb
-  targetForm: VerbFormIndex
-  /** Form shown in the prompt (V2/V3 when asking for V1; V1 when asking for V2/V3). */
-  promptShown: VerbFormIndex
-  options?: string[]
-}
-
-function createRound(): Round {
-  const verb = pickRandomVerb()
-  const kind = pickRandomExerciseKind()
-  if (kind === 'phonemic') {
-    return { kind, verb, targetForm: 0, promptShown: 0 }
-  }
-  const targetForm = pickRandomFormIndex()
-  const promptShown = pickPromptShown(targetForm)
-  const options =
-    kind === 'choice' ? buildChoiceOptions(verb, targetForm) : undefined
-  return { kind, verb, targetForm, promptShown, options }
-}
+import { Button } from "@shared/ui/button";
+import { Input } from "@shared/ui/input";
+import { Choices } from "@entities/choices";
+import { Feedback } from "@entities/feedback";
+import { Phonemic } from "@entities/phonemic";
+import { Stack } from "@shared/ui/stack";
+import { Form } from "@shared/ui/form";
+import { selectFormState } from "@shared/ui/form/services";
+import { Layout } from "@shared/ui/layout";
+import { AnswerPhaseStatus } from "@shared/const";
+import { getExerciseTitle, selectExerciseState } from "@features/exercise";
 
 export default function App() {
-  const [round, setRound] = useState<Round>(() => createRound())
-  const [roundState, setRoundState] = useState<RoundState>({ status: 'idle' })
-  const [score, setScore] = useState({ right: 0, total: 0 })
-  const [textInput, setTextInput] = useState('')
+  const { round, answerPhase, nextRound, submitAnswer } = selectExerciseState();
+  const { value: answerValue, setValue: setAnswerValue } = selectFormState();
 
-  const correctAnswer = useMemo(
-    () => getForm(round.verb, round.targetForm),
-    [round],
-  )
-
-  const nextRound = useCallback(() => {
-    setRound(createRound())
-    setRoundState({ status: 'idle' })
-    setTextInput('')
-  }, [])
-
-  const recordResult = useCallback((correct: boolean, reveal: string) => {
-    setRoundState({ status: 'answered', correct, reveal })
-    setScore((s) => ({
-      right: s.right + (correct ? 1 : 0),
-      total: s.total + 1,
-    }))
-  }, [])
+  const title = getExerciseTitle(round);
 
   const onChooseOption = (option: string) => {
-    if (roundState.status !== 'idle' || round.kind !== 'choice') return
-    const ok = formsMatch(correctAnswer, option)
-    recordResult(ok, correctAnswer)
-  }
+    if (answerPhase.status !== AnswerPhaseStatus.Idle || round.kind !== "choice")
+      return;
+    submitAnswer(option);
+  };
 
   const onSubmitWritten = (e: FormEvent) => {
-    e.preventDefault()
-    if (roundState.status !== 'idle' || round.kind === 'choice') return
-    const ok = formsMatch(correctAnswer, textInput)
-    recordResult(ok, correctAnswer)
-  }
-
-  const title =
-    round.kind === 'phonemic'
-      ? 'Guess the verb (infinitive)'
-      : round.kind === 'choice'
-        ? 'Choose the correct form'
-        : 'Type the correct form'
+    e.preventDefault();
+    if (answerPhase.status !== AnswerPhaseStatus.Idle || round.kind === "choice")
+      return;
+    submitAnswer(answerValue);
+  };
 
   return (
-    <div className="app">
-      <Header
-         title={"Irregular verbs"}
-         subtitle={"Random drills: multiple choice, typing, and phonemic transcription"}
-         score={score}
-      />
+    <Layout>
+      <Stack extraCN={{ isSecondary: true }}>
+        <h3 className={"h3"}>{title}</h3>
 
-      <main className="card">
-        <p className="exercise-type">{title}</p>
+        {round.kind === "phonemic" && <Phonemic verb={round.verb} />}
 
-        {round.kind === 'phonemic' && (
-          <div className="prompt-block">
-            <p className="prompt-label">Phonemic (BrE IPA)</p>
-            <p className="ipa" lang="en">
-              {round.verb.ipa}
-            </p>
-            <p className="hint">Enter the infinitive without &quot;to&quot;.</p>
-          </div>
+        {round.kind === "choice" && (
+          <Stack>
+            <div>
+              Pick the correct <strong>{FORM_LABELS[round.targetForm]}</strong>{" "}
+              for <em>{getForm(round.verb, round.promptShown)}</em>
+            </div>
+
+            <Choices
+              options={round.options || []}
+              disabled={answerPhase.status !== AnswerPhaseStatus.Idle}
+              onChoose={onChooseOption}
+            />
+          </Stack>
         )}
 
-        {round.kind === 'choice' && (
-          <div className="prompt-block">
-            {round.targetForm === 0 ? (
-              <p className="prompt-main">
-                Pick the correct <strong>{FORM_LABELS[0]}</strong>. Clue —{' '}
-                {FORM_LABELS[round.promptShown]}:{' '}
-                <em>{getForm(round.verb, round.promptShown)}</em>
-              </p>
-            ) : (
-              <p className="prompt-main">
-                Pick the correct <strong>{FORM_LABELS[round.targetForm]}</strong>{' '}
-                for <em>{round.verb.v1}</em>.
-              </p>
-            )}
-          </div>
+        {round.kind === "write" && (
+          <Stack>
+            <div>
+              Write the <strong>{FORM_LABELS[round.targetForm]}</strong> of{" "}
+              <em>{getForm(round.verb, round.promptShown)}</em>
+            </div>
+          </Stack>
         )}
 
-        {round.kind === 'write' && (
-          <div className="prompt-block">
-            {round.targetForm === 0 ? (
-              <p className="prompt-main">
-                Write the <strong>{FORM_LABELS[0]}</strong> when the{' '}
-                {FORM_LABELS[round.promptShown]} is{' '}
-                <em>{getForm(round.verb, round.promptShown)}</em>.
-              </p>
-            ) : (
-              <p className="prompt-main">
-                Write the <strong>{FORM_LABELS[round.targetForm]}</strong> of{' '}
-                <em>{round.verb.v1}</em>.
-              </p>
-            )}
-          </div>
-        )}
-
-        {round.kind === 'choice' && round.options && (
-          <div className="choices" role="group" aria-label="Answer options">
-            {round.options.map((opt) => (
-               <Button
-                  key={opt}
-                  extraCN={{ isChoice: true }}
-                  disabled={roundState.status !== 'idle'}
-                  onClick={() => onChooseOption(opt)}
-                  label={opt}
-               />
-            ))}
-          </div>
-        )}
-
-        {(round.kind === 'write' || round.kind === 'phonemic') && (
-          <form className="write-form" onSubmit={onSubmitWritten}>
+        {(round.kind === "write" || round.kind === "phonemic") && (
+          <Form onSubmit={onSubmitWritten}>
             <label className="sr-only" htmlFor="answer-input">
               Your answer
             </label>
-            <input
+
+            <Input
               id="answer-input"
-              className="text-input"
               autoComplete="off"
               spellCheck={false}
-              value={textInput}
-              onChange={(e) => setTextInput(e.target.value)}
-              disabled={roundState.status !== 'idle'}
+              value={answerValue}
+              onChange={(e) => setAnswerValue(e.target.value)}
+              disabled={answerPhase.status !== AnswerPhaseStatus.Idle}
               placeholder="Type the verb form…"
             />
             <Button
-               extraCN={{ isPrimary: true }}
-               disabled={roundState.status !== 'idle' || !textInput.trim()}
-               label={"Check"}
-               type={"submit"}
+              extraCN={{ isPrimary: true }}
+              disabled={
+                answerPhase.status !== AnswerPhaseStatus.Idle || !answerValue.trim()
+              }
+              label={"Check"}
+              type={"submit"}
             />
-          </form>
+          </Form>
         )}
 
-        {roundState.status === 'answered' && (
-          <div
-            className={`feedback ${roundState.correct ? 'feedback--ok' : 'feedback--bad'}`}
-            role="status"
-          >
-            <p className="feedback__title">
-              {roundState.correct ? 'Correct!' : 'Not quite.'}
-            </p>
-            {!roundState.correct && (
-              <p className="feedback__answer">
-                Answer: <strong>{roundState.reveal}</strong>
-              </p>
-            )}
-            <Button
-               extraCN={{ isPrimary: true }}
-               label={"Next exercise"}
-               onClick={nextRound}
-            />
-          </div>
+        {answerPhase.status === AnswerPhaseStatus.Answered && (
+          <Feedback
+            correct={answerPhase.correct}
+            reveal={answerPhase.reveal}
+            onNext={nextRound}
+          />
         )}
-      </main>
-
-      <footer className="footer">
-        <p>
-          {IRREGULAR_VERBS.length} verbs in the deck · IPA in British English
-        </p>
-      </footer>
-    </div>
-  )
+      </Stack>
+    </Layout>
+  );
 }

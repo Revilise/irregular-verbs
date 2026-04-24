@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import type { ExtraCN, UtilCN } from "../lib/bem";
+import type { ExtraCN, UtilCN } from "@shared/lib/bem";
 
 export interface IComponent {
     extraCN?: ExtraCN;

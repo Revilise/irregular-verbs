@@ -1,1 +1,2 @@
-export { Header } from "./ui/header.tsx";
+import "./header.pcss";
+export { Header } from "@shared/ui/header/ui/header.tsx";

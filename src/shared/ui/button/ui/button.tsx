@@ -1,5 +1,5 @@
-import {useBEM} from "../../../lib";
-import type {IButton} from "../config/types.ts";
+import {useBEM} from "@shared/lib";
+import type {IButton} from "@shared/ui/button/config/types.ts";
 import type {FC} from "react";
 
 export const Button: FC<IButton> = ({

@@ -1,0 +1,32 @@
+.stack {
+  --stackDirection: column;
+  --stackBg: transparent;
+  --stackGap: 8px;
+  --stackPadX: 0;
+  --stackPadY: 0;
+  --stackShadow: none;
+  --stackBorderRad: 0;
+  --stackBorder: none;
+  --stackWidth: min(100%, 28rem);
+  
+  display: flex;
+  gap: var(--stackGap);
+  flex-direction: var(--stackDirection);
+  padding-block: var(--stackPadY);
+  padding-inline: var(--stackPadX);
+  border-radius: var(--stackBorderRad);
+  border: var(--stackBorder);
+  box-shadow: var(--stackShadow);
+  width: var(--stackWidth);
+  background: var(--stackBg);
+  text-align: left;
+  
+  &--isSecondary {
+    --stackShadow: var(--shadow-soft);
+    --stackPadY: 1.5rem;
+    --stackPadX: 1.35rem;
+    --stackBorderRad: 1rem;
+    --stackBorder: 1px solid var(--color-border);
+    --stackBg: var(--color-surface);
+  }
+}

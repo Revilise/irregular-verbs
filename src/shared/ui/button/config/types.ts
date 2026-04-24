@@ -1,4 +1,4 @@
-import type {IComponent} from "../../../types/component.ts";
+import type {IComponent} from "@shared/types/component.ts";
 import type {ButtonHTMLAttributes} from "react";
 
 type HTMLButtonElement = ButtonHTMLAttributes<HTMLButtonElement>;

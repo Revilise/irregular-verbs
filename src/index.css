@@ -1,22 +1,12 @@
 @import './app/style/palette.pcss';
 
 :root {
-  --sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
-
   --shadow-soft:
     0 1px 2px var(--color-shadow-layer-1),
     0 12px 32px var(--color-shadow-layer-2);
 
-  font-family: var(--sans);
-  font-size: 17px;
-  line-height: 1.5;
   color: var(--color-text);
   background: var(--color-bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 *,
@@ -39,8 +29,3 @@ body {
   border-inline: 1px solid var(--color-border);
 }
 
-h1,
-h2,
-h3 {
-  font-family: var(--sans);
-}
