@@ -6,7 +6,7 @@ import {
   pickRandomVerb,
 } from "@shared/lib/quiz";
 import type { Round } from "@features/exercise/model/types";
-import type { ExerciseKind } from "@shared/lib/quiz/types.ts";
+import type { ExerciseKind } from "@shared/lib/quiz";
 
 /**
  * Picks a random task: choice / free input / phonemic, builds prompt and options.

@@ -1,4 +1,4 @@
-@import './app/style/palette.pcss';
+@import './style/palette.pcss';
 
 :root {
   --shadow-soft:

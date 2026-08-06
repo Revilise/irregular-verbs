@@ -5,18 +5,16 @@ import {
   getForm,
 } from "@data/verbs";
 
+export type { ExerciseKind } from "@shared/lib/quiz/types.ts";
 import type { ExerciseKind } from "@shared/lib/quiz/types.ts";
-
-function randomInt(max: number): number {
-  return Math.floor(Math.random() * max);
-}
+import { random } from "@shared/lib/utils/random.ts";
 
 export function pickRandomVerb(): IrregularVerb {
-  return IRREGULAR_VERBS[randomInt(IRREGULAR_VERBS.length)]!;
+  return IRREGULAR_VERBS[random({ max: IRREGULAR_VERBS.length })]!;
 }
 
 export function pickRandomFormIndex(): VerbFormIndex {
-  return randomInt(3) as VerbFormIndex;
+  return random({ max: 3 }) as VerbFormIndex;
 }
 
 /**
@@ -24,14 +22,14 @@ export function pickRandomFormIndex(): VerbFormIndex {
  */
 export function pickPromptShown(targetForm: VerbFormIndex): VerbFormIndex {
   if (targetForm === 0) {
-    return randomInt(2) === 0 ? 1 : 2;
+    return random({ max: 2 }) === 0 ? 1 : 2;
   }
   return 0;
 }
 
 export function pickRandomExerciseKind(): ExerciseKind {
   const kinds: ExerciseKind[] = ["choice", "write", "phonemic"];
-  return kinds[randomInt(3)]!;
+  return kinds[random({ max: 3 })]!;
 }
 
 export function shuffle<T>(items: T[]): T[] {
