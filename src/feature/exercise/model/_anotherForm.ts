@@ -26,7 +26,7 @@ export class AnotherFormExercise extends Exercise {
     }
 
     get description(): string {
-        return `${capitalize(this.answer)} ${this.expectedVersion} form of verb ${this.question} (${this.questionVersion})`
+        return `${capitalize(this.answer)} <strong>${this.expectedVersion} form</strong> of verb <strong>${this.question}</strong> (${this.questionVersion})`
     }
 
     get options(): string[] {

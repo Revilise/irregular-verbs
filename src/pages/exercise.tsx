@@ -7,6 +7,7 @@ import {useExercise} from "@features/exercise/model/hook.ts";
 import {AnswerType, ExerciseStatus} from "@features/exercise/config/types.ts";
 import {Checker} from "@shared/ui/checker";
 import {CheckerType} from "@shared/ui/checker/config/const.ts";
+import {capitalize} from "@shared/lib/utils/text.ts";
 
 export const Exercise = () => {
   const { exercise, answer, options, submit, status, refresh } = useExercise();
@@ -30,7 +31,7 @@ export const Exercise = () => {
        <h3 className={"h3"}>{exercise.title}</h3>
 
        <Stack>
-         <div>{exercise.description}</div>
+         <div dangerouslySetInnerHTML={{ __html: exercise.description }} />
        </Stack>
 
        {exercise.answer === AnswerType.choose && (
@@ -78,10 +79,9 @@ export const Exercise = () => {
        )}
 
        {status !== ExerciseStatus.idle && (
-          <Stack>
-              <h3>{status === ExerciseStatus.correct ? "Correct!" : "You made a mistake"}</h3>
-              <div>The correct answer is <strong>{exercise.expected}</strong></div>
-
+          <Stack extraCN={{ isOutline: true }}>
+              <strong className={"align-center"}>{capitalize(status)}</strong>
+              <div className={"align-center"}>The correct answer is <strong>{exercise.expected}</strong></div>
               <Button onClick={onNextClick} label={"Next"} />
           </Stack>
        )}

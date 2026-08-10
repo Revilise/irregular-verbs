@@ -31,7 +31,7 @@ export type useExerciseReturn = {
 }
 
 export enum ExerciseStatus {
-    "idle",
-    "correct",
-    "wrong"
+    "idle" = "idle",
+    "correct" = "correct",
+    "wrong" = "wrong"
 }
