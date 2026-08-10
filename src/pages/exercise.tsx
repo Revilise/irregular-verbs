@@ -1,96 +1,89 @@
-import {AnswerPhaseStatus, getExerciseTitle, selectExerciseState} from "@features/exercise/index.js";
-import {selectFormState} from "@shared/ui/form/services/index.js";
-import type {FormEvent} from "react";
-import {Phonemic} from "@entities/phonemic/index.js";
+import {type FormEvent} from "react";
 import {Stack} from "@shared/ui/stack/index.js";
-import {FORM_LABELS, getForm} from "@data/verbs.js";
-import {Choices} from "@entities/choices/index.js";
 import {Form} from "@shared/ui/form/index.js";
 import {Input} from "@shared/ui/input/index.js";
 import {Button} from "@shared/ui/button/index.js";
-import {Feedback} from "@entities/feedback/index.js";
+import {useExercise} from "@features/exercise/model/hook.ts";
+import {AnswerType, ExerciseStatus} from "@features/exercise/config/types.ts";
+import {Checker} from "@shared/ui/checker";
+import {CheckerType} from "@shared/ui/checker/config/const.ts";
 
 export const Exercise = () => {
-  const { round, answerPhase, nextRound, submitAnswer } = selectExerciseState();
-  const { value: answerValue, setValue: setAnswerValue } = selectFormState();
+  const { exercise, answer, submit, status, refresh } = useExercise();
 
-  const title = getExerciseTitle(round);
-
-  const onChooseOption = (option: string) => {
-    if (answerPhase.status !== AnswerPhaseStatus.Idle || round.kind !== "choice")
-      return;
-    submitAnswer(option);
-  };
-
-  const onSubmitWritten = (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (answerPhase.status !== AnswerPhaseStatus.Idle || round.kind === "choice")
-      return;
-    submitAnswer(answerValue);
+    submit();
   };
+
+  const onOptionChange = (e: FormEvent) => {
+      const target = e.target as HTMLInputElement;
+      answer.set(target.value);
+  }
+
+  const onNextClick = () => {
+      refresh();
+  }
 
   return (
      <Stack extraCN={{ isSecondary: true }}>
-       <h3 className={"h3"}>{title}</h3>
+       <h3 className={"h3"}>{exercise.title}</h3>
 
-       {round.kind === "phonemic" && <Phonemic verb={round.verb} />}
+       <Stack>
+         <div>{exercise.description}</div>
+       </Stack>
 
-       {round.kind === "choice" && (
-          <Stack>
-            <div>
-              Pick the correct <strong>{FORM_LABELS[round.targetForm]}</strong>{" "}
-              for <em>{getForm(round.verb, round.promptShown)}</em>
-            </div>
+       {exercise.answer === AnswerType.choose && (
+          <Form
+              disabled={status !== ExerciseStatus.idle}
+              onSubmit={onSubmit}
+              onChange={onOptionChange}
+          >
+              {exercise.options.map((opt, idx) =>
+                  <Checker key={`${opt}-${idx}`} type={CheckerType.radio} name={"variant"} value={opt} label={opt} />
+              )}
 
-            <Choices
-               options={round.options || []}
-               disabled={answerPhase.status !== AnswerPhaseStatus.Idle}
-               onChoose={onChooseOption}
-            />
-          </Stack>
+              <Button
+                  extraCN={{ isPrimary: true }}
+                  disabled={status !== ExerciseStatus.idle || !answer.value?.trim()}
+                  label={"Check"}
+                  type={"submit"}
+              />
+          </Form>
        )}
 
-       {round.kind === "write" && (
-          <Stack>
-            <div>
-              Write the <strong>{FORM_LABELS[round.targetForm]}</strong> of{" "}
-              <em>{getForm(round.verb, round.promptShown)}</em>
-            </div>
-          </Stack>
-       )}
-
-       {(round.kind === "write" || round.kind === "phonemic") && (
-          <Form onSubmit={onSubmitWritten}>
+       {exercise.answer === AnswerType.write && (
+          <Form
+              disabled={status !== ExerciseStatus.idle}
+              onSubmit={onSubmit}
+          >
             <label className="sr-only" htmlFor="answer-input">
-              Your answer
+              Type your answer
             </label>
-
             <Input
                id="answer-input"
                autoComplete="off"
                spellCheck={false}
-               value={answerValue}
-               onChange={(e) => setAnswerValue(e.target.value)}
-               disabled={answerPhase.status !== AnswerPhaseStatus.Idle}
+               value={answer.value}
+               onChange={(e) => answer.set(e.target.value)}
                placeholder="Type the verb form…"
             />
             <Button
                extraCN={{ isPrimary: true }}
-               disabled={
-                  answerPhase.status !== AnswerPhaseStatus.Idle || !answerValue.trim()
-               }
+               disabled={status !== ExerciseStatus.idle || !answer.value?.trim()}
                label={"Check"}
                type={"submit"}
             />
           </Form>
        )}
 
-       {answerPhase.status === AnswerPhaseStatus.Answered && (
-          <Feedback
-             correct={answerPhase.correct}
-             reveal={answerPhase.reveal}
-             onNext={nextRound}
-          />
+       {status !== ExerciseStatus.idle && (
+          <Stack>
+              <h3>{status === ExerciseStatus.correct ? "Correct!" : "You made a mistake"}</h3>
+              <div>The correct answer is <strong>{exercise.expected}</strong></div>
+
+              <Button onClick={onNextClick} label={"Next"} />
+          </Stack>
        )}
      </Stack>
   )

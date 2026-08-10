@@ -1,53 +1,99 @@
 .btn {
-  font: inherit;
-  
-  
-  &--isPrimary {
-    font-weight: 600;
-    padding: 0.65rem 1rem;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    background: var(--gradient-primary);
-    color: var(--color-white);
-    box-shadow: 0 2px 12px var(--color-accent-button-shadow);
+  --btnFont: inherit;
+  --btnFontWeight: 600;
+  --btnFontSize: 1rem;
+  --btnTextAlign: center;
 
-    &:hover:not(:disabled) {
-      filter: brightness(1.05);
-    }
+  --btnPadX: 1rem;
+  --btnPadY: 0.65rem;
+  --btnBorderRad: .5rem;
+  --btnBorderWidth: 1px;
 
-    &:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
+  --btnCurColor: var(--btnColor);
+  --btnColor: var(--color-white);
+  --btnHoverColor: var(--color-white);
+  --btnActiveColor: var(--color-white);
+  --btnDisabledColor: var(--color-white);
+
+  --btnCurBg: var(--btnBg);
+  --btnBg: var(--gradient-primary);
+  --btnHoverBg: var(--gradient-primary);
+  --btnActiveBg: var(--gradient-primary);
+  --btnDisabledBg: var(--gradient-primary);
+
+  --btnCurBorderColor: var(--btnBorderColor);
+  --btnBorderColor: transparent;
+  --btnHoverBorderColor: transparent;
+  --btnActiveBorderColor: transparent;
+  --btnDisabledBorderColor: transparent;
+
+  --btnShadow: 0 2px 12px var(--color-accent-button-shadow);
+  --btnOpacity: 1;
+  --btnCursor: pointer;
+  --btnFilter: none;
+  --btnTransition: .2s all;
+
+  background: var(--btnCurBg);
+  color: var(--btnCurColor);
+  border: var(--btnCurBorderColor) var(--btnBorderWidth) solid;
+
+  font: var(--btnFont);
+  font-size: var(--btnFontSize);
+  font-weight: var(--btnFontWeight);
+  text-align: var(--btnTextAlign);
+
+  padding-inline: var(--btnPadX);
+  padding-block: var(--btnPadY);
+  border-radius: var(--btnBorderRad);
+
+  box-shadow: var(--btnShadow);
+  opacity: var(--btnOpacity);
+  cursor: var(--btnCursor);
+  filter: var(--btnFilter);
+  transition: var(--btnTransition);
+
+  &:hover:not(:disabled) {
+    --btnCurBg: var(--btnHoverBg);
+    --btnCurColor: var(--btnHoverColor);
+    --btnCurBorderColor: var(--btnHoverBorderColor);
+
+    --btnFilter: brightness(1.05);
+  }
+
+  &:disabled {
+    --btnCurBg: var(--btnDisabledBg);
+    --btnCurColor: var(--btnDisabledColor);
+    --btnCurBorderColor: var(--btnDisabledBorderColor);
+
+    --btnOpacity: 0.45;
+    --btnCursor: not-allowed;
+    --btnShadow: none;
   }
 
   &--isChoice {
-    text-align: left;
-    padding: 0.75rem 1rem;
-    border-radius: 10px;
-    border: 1px solid var(--color-border);
-    background: var(--color-bg-elevated);
-    color: var(--color-text-heading);
-    cursor: pointer;
-    transition:
+    --btnTextAlign: left;
+    --btnPadY: 0.75rem;
+
+    --btnBg: var(--color-bg-elevated);
+    --btnHoverBg: var(--color-accent-bg);
+
+    --btnBorderColor: var(--color-border);
+    --btnHoverBorderColor: var(--color-accent-border);
+
+    --btnColor: var(--color-text-heading);
+
+    --btnTransition:
       border-color 0.15s,
       background 0.15s,
       transform 0.08s;
-
-    &:hover:not(:disabled) {
-      border-color: var(--color-accent-border);
-      background: var(--color-accent-bg);
-    }
 
     &:active:not(:disabled) {
       transform: scale(0.99);
     }
 
     &:disabled {
-      opacity: 0.65;
-      cursor: default;
+      --btnOpacity: 0.65;
+      --btnCursor: default;
     }
   }
 }
