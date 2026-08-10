@@ -1,6 +1,6 @@
 import { Exercise } from "./exercise.ts";
 import { capitalize } from "@shared/lib/utils/text.ts";
-import { randomSequence } from "@shared/lib/utils/random.ts";
+import {randomSequence, shuffle} from "@shared/lib/utils/random.ts";
 
 export class PhonemicExercise extends Exercise {
 
@@ -20,11 +20,9 @@ export class PhonemicExercise extends Exercise {
 
     get options(): string[] {
         const { v1 } = this.verb;
-        const randoms = randomSequence({ max: 3, count: 3 }).map(i => this.verb.options[i]);
-        return [ v1, ...randoms ];
-    }
+        const randoms = randomSequence({ max: 3, count: 3 });
+        const options = randoms.map(i => this.verb.options[i]);
 
-    check(value: string) {
-        return value === this.expected;
+        return shuffle([ v1, ...options ]);
     }
 }

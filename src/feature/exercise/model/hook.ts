@@ -8,12 +8,14 @@ export function useExercise(): useExerciseReturn {
     const [exercise, setExercise] = useState<Exercise>(() => ExerciseFactory.random());
     const [answerValue, setAnswerValue] = useState<string>("");
     const [status, setStatus] = useState<ExerciseStatus>(ExerciseStatus.idle);
+    const [options, setOptions] = useState<string[]>(exercise.options)
 
     function refresh() {
         const exercise = ExerciseFactory.random();
         setExercise(exercise);
         setStatus(ExerciseStatus.idle);
         setAnswerValue("");
+        setOptions(exercise.options);
     }
 
     function submit() {
@@ -26,6 +28,7 @@ export function useExercise(): useExerciseReturn {
         submit,
         exercise,
         status,
+        options,
         answer: {
             value: answerValue,
             set: setAnswerValue

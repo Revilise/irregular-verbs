@@ -23,6 +23,7 @@ export type useExerciseReturn = {
     exercise: Exercise;
     status: ExerciseStatus;
     submit: () => void;
+    options: string[];
     answer: {
         value: string;
         set: (value: string) => void;

@@ -9,7 +9,7 @@ import {Checker} from "@shared/ui/checker";
 import {CheckerType} from "@shared/ui/checker/config/const.ts";
 
 export const Exercise = () => {
-  const { exercise, answer, submit, status, refresh } = useExercise();
+  const { exercise, answer, options, submit, status, refresh } = useExercise();
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -39,13 +39,13 @@ export const Exercise = () => {
               onSubmit={onSubmit}
               onChange={onOptionChange}
           >
-              {exercise.options.map((opt, idx) =>
+              {options.map((opt, idx) =>
                   <Checker key={`${opt}-${idx}`} type={CheckerType.radio} name={"variant"} value={opt} label={opt} />
               )}
 
               <Button
                   extraCN={{ isPrimary: true }}
-                  disabled={status !== ExerciseStatus.idle || !answer.value?.trim()}
+                  disabled={status !== ExerciseStatus.idle || !answer.value?.trim() }
                   label={"Check"}
                   type={"submit"}
               />

@@ -49,6 +49,6 @@ export class Exercise {
     }
 
     check(value: string): boolean {
-        throw new Error("Exercise check: " + value);
+        return value === this.expected;
     }
 }
