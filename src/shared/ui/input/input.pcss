@@ -1,19 +1,45 @@
 .input {
-  font: inherit;
-  font-family: var(--mono);
-  padding: 0.75rem 0.9rem;
-  border-radius: 10px;
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-elevated);
-  color: var(--color-text-heading);
+  --inputFont: var(--mono);
+  --inputFontSize: 1rem;
+  --inputColor: var(--color-slate-800);
+
+  --inputBorderRad: 10px;
+  --inputBorderWidth: 1px;
+  --inputCurBorderColor: var(--inputBorderColor);
+  --inputBorderColor: var(--color-slate-200);
+
+  --inputOutlineWidth: 2px;
+  --inputCurOutlineColor: var(--inputOutlineColor);
+  --inputOutlineColor: var(--color-indigo-400);
+
+  --inputCurBg: var(--inputBg);
+  --inputBg: var(--color-white);
+
+  --inputOpacity: 1;
+  --inputPadX: 0.9rem;
+  --inputPadY: 0.75rem;
+
+  font-family: var(--inputFont) sans-serif;
+  color: var(--inputColor);
+  font-size: var(--inputFontSize);
+
+  padding-block: var(--inputPadY);
+  padding-inline: var(--inputPadX);
+
+  border: var(--inputBorderWidth) solid var(--inputBorderColor);
+  border-radius: var(--inputBorderRad);
+  outline: var(--inputCurOutlineColor) var(--inputOutlineWidth) solid;
+  background: var(--inputCurBg);
+
+  opacity: var(--inputOpacity);
 
   &:focus {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-indigo-500);
     outline-offset: 1px;
   }
 
   &:disabled {
-    opacity: 0.7;
+    --inputOpacity: 0.7;
   }
 }
 

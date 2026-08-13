@@ -8,6 +8,7 @@ export function useExercise(): useExerciseReturn {
     const [exercise, setExercise] = useState<Exercise>(() => ExerciseFactory.random());
     const [answerValue, setAnswerValue] = useState<string>("");
     const [status, setStatus] = useState<ExerciseStatus>(ExerciseStatus.idle);
+    const [isSolved, setIsSolved] = useState<boolean>(false);
     const [options, setOptions] = useState<string[]>(exercise.options)
 
     function refresh() {
@@ -16,11 +17,13 @@ export function useExercise(): useExerciseReturn {
         setStatus(ExerciseStatus.idle);
         setAnswerValue("");
         setOptions(exercise.options);
+        setIsSolved(false);
     }
 
     function submit() {
         const isCorrect = exercise.check(answerValue);
         setStatus(isCorrect ? ExerciseStatus.correct : ExerciseStatus.wrong);
+        setIsSolved(true);
     }
 
     return {
@@ -29,6 +32,7 @@ export function useExercise(): useExerciseReturn {
         exercise,
         status,
         options,
+        isSolved,
         answer: {
             value: answerValue,
             set: setAnswerValue

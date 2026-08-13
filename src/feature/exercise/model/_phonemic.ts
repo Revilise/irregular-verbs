@@ -15,7 +15,7 @@ export class PhonemicExercise extends Exercise {
     }
 
     get description(): string {
-        return `${capitalize(this.answer)} what is this verb: ${this.verb.ipa}`;
+        return `${capitalize(this.answer)} what is this verb: <strong>${this.verb.ipa}</strong>`;
     }
 
     get options(): string[] {

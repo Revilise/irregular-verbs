@@ -27,11 +27,12 @@ export type useExerciseReturn = {
     answer: {
         value: string;
         set: (value: string) => void;
-    }
+    },
+    isSolved: boolean;
 }
 
 export enum ExerciseStatus {
-    "idle",
-    "correct",
-    "wrong"
+    "idle" = "idle",
+    "correct" = "correct",
+    "wrong" = "wrong"
 }
