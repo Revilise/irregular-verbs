@@ -2,11 +2,11 @@
 
 :root {
   --shadow-soft:
-    0 1px 2px var(--color-shadow-layer-1),
-    0 12px 32px var(--color-shadow-layer-2);
+    0 1px 2px var(--color-slate-950-alpha-06),
+    0 12px 32px var(---color-slate-950-alpha-08);
 
-  color: var(--color-text);
-  background: var(--color-bg);
+  color: var(--color-gray-600);
+  background: var(--color-slate-50);
 }
 
 *,
@@ -26,6 +26,6 @@ body {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  border-inline: 1px solid var(--color-border);
+  border-inline: 1px solid var(--color-slate-200);
 }
 

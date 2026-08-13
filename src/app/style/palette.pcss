@@ -1,62 +1,54 @@
 :root {
-  /* text */
-  --color-text: #4b5563;
-  --color-text-heading: #111827;
-  --color-text-muted: #6b7280;
+  /* gray */
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-900: #111827;
 
-  /* surface */
-  --color-bg: #f8fafc;
-  --color-bg-elevated: #ffffff;
-  --color-surface: #ffffff;
-  --color-border: #e2e8f0;
+  /* slate */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-950: #0f172a;
+  --color-slate-950-alpha-06: rgba(15, 23, 42, 0.06);
+  --color-slate-950-alpha-08: rgba(15, 23, 42, 0.08);
 
-  /* accent */
-  --color-accent: #6366f1;
-  --color-accent-dim: #4f46e5;
-  --color-accent-bg: rgba(99, 102, 241, 0.1);
-  --color-accent-border: rgba(99, 102, 241, 0.45);
-  --color-accent-button-shadow: rgba(99, 102, 241, 0.35);
+  /* indigo */
+  --color-indigo-400: #818cf8;
+  --color-indigo-400-alpha-12: rgba(129, 140, 248, 0.12);
+  --color-indigo-400-alpha-45: rgba(129, 140, 248, 0.45);
+  --color-indigo-400-alpha-50: rgba(129, 140, 248, 0.5);
+  --color-indigo-500: #6366f1;
+  --color-indigo-500-alpha-10: rgba(99, 102, 241, 0.1);
+  --color-indigo-500-alpha-35: rgba(99, 102, 241, 0.35);
+  --color-indigo-500-alpha-45: rgba(99, 102, 241, 0.45);
+  --color-indigo-600: #4f46e5;
 
-  /* feedback */
-  --color-success: #059669;
-  --color-danger: #dc2626;
+  /* emerald */
+  --color-emerald-400: #34d399; /* заменить --color-emerald-600*/
+  --color-emerald-600: #059669;
 
-  /* utility */
+  /* red */
+  --color-red-400: #f87171; /* заменить --color-red-600 */
+  --color-red-600: #dc2626;
+
+  /* neutral */
   --color-white: #ffffff;
-
-  /* elevation (shadow tint layers) */
-  --color-shadow-layer-1: rgba(15, 23, 42, 0.06);
-  --color-shadow-layer-2: rgba(15, 23, 42, 0.08);
+  --color-black-alpha-25: rgba(0, 0, 0, 0.25); /* заменить --color-slate-950-alpha-06 */
+  --color-black-alpha-35: rgba(0, 0, 0, 0.35); /* заменить ---color-slate-950-alpha-08 */
 
   /* gradients */
-  --gradient-primary: linear-gradient(
-    165deg,
-    var(--color-accent),
-    var(--color-accent-dim)
+  --gradient-indigo: linear-gradient(
+          165deg,
+          var(--color-indigo-500),
+          var(--color-indigo-600)
   );
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-text: #94a3b8;
-    --color-text-heading: #f1f5f9;
-    --color-text-muted: #64748b;
-
-    --color-bg: #0f172a;
-    --color-bg-elevated: #1e293b;
-    --color-surface: #1e293b;
-    --color-border: #334155;
-
-    --color-accent: #818cf8;
-    --color-accent-dim: #6366f1;
-    --color-accent-bg: rgba(129, 140, 248, 0.12);
-    --color-accent-border: rgba(129, 140, 248, 0.5);
-    --color-accent-button-shadow: rgba(129, 140, 248, 0.45);
-
-    --color-success: #34d399;
-    --color-danger: #f87171;
-
-    --color-shadow-layer-1: rgba(0, 0, 0, 0.25);
-    --color-shadow-layer-2: rgba(0, 0, 0, 0.35);
-  }
+  --gradient-indigo-2: linear-gradient(
+          165deg,
+          var(--color-indigo-400),
+          var(--color-indigo-500)
+  );
 }
