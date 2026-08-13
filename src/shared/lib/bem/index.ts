@@ -1,6 +1,6 @@
 export type ExtraCN = Record<string, boolean>;
 
-export type UtilCN = string[];
+export type UtilCN = (string | boolean)[];
 
 export function useBEM(baseClass: string) {
     return {
@@ -22,6 +22,7 @@ export function useBEM(baseClass: string) {
             } else if (Array.isArray(utilCN)) {
                 for (const i in utilCN) {
                     const cn = utilCN[i];
+
                     if (cn) {
                         className.push(cn);
                     }

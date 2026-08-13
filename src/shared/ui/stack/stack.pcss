@@ -8,7 +8,7 @@
   --stackBorderRad: 0;
   --stackBorder: none;
   --stackWidth: min(100%, 28rem);
-  
+
   display: flex;
   gap: var(--stackGap);
   flex-direction: var(--stackDirection);
@@ -20,6 +20,9 @@
   width: var(--stackWidth);
   background: var(--stackBg);
   text-align: left;
+
+  opacity: 1;
+  transform: translate(0);
   
   &--isSecondary {
     --stackShadow: var(--shadow-soft);

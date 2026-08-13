@@ -1,6 +1,6 @@
-import type {FormEvent} from "react";
+import {type FormEvent, useState} from "react";
 import {useExercise} from "../model/hook.ts";
-import {AnswerType, ExerciseStatus} from "../config/types.ts";
+import {AnswerType} from "../config/types.ts";
 
 import {Stack} from "@shared/ui/stack";
 import {Form} from "@shared/ui/form";
@@ -12,7 +12,8 @@ import {Input} from "@shared/ui/input";
 import {capitalize} from "@shared/lib/utils/text.ts";
 
 export const Exercise = () => {
-    const { exercise, answer, options, submit, status, refresh } = useExercise();
+    const { exercise, answer, options, submit, status, refresh, isSolved } = useExercise();
+    const [isAnimate, setIsAnimate] = useState<boolean>(false);
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault();
@@ -25,11 +26,19 @@ export const Exercise = () => {
     }
 
     const onNextClick = () => {
-        refresh();
+        setIsAnimate(true);
+
+        setTimeout(() => {
+            refresh();
+        }, 300);
+
+        setTimeout(() => {
+            setIsAnimate(false);
+        }, 600);
     }
 
     return (
-        <Stack extraCN={{ isSecondary: true }}>
+        <Stack extraCN={{ isSecondary: true }} utilCN={[ isAnimate && "isFadeTransition" ]}>
             <h3 className={"h3"}>{exercise.title}</h3>
 
             <Stack>
@@ -38,7 +47,7 @@ export const Exercise = () => {
 
             {exercise.answer === AnswerType.choose && (
                 <Form
-                    disabled={status !== ExerciseStatus.idle}
+                    disabled={isSolved}
                     onSubmit={onSubmit}
                     onChange={onOptionChange}
                 >
@@ -48,7 +57,7 @@ export const Exercise = () => {
 
                     <Button
                         extraCN={{ isPrimary: true }}
-                        disabled={status !== ExerciseStatus.idle || !answer.value?.trim() }
+                        disabled={isSolved || !answer.value?.trim() }
                         label={"Check"}
                         type={"submit"}
                     />
@@ -57,7 +66,7 @@ export const Exercise = () => {
 
             {exercise.answer === AnswerType.write && (
                 <Form
-                    disabled={status !== ExerciseStatus.idle}
+                    disabled={isSolved}
                     onSubmit={onSubmit}
                 >
                     <label className="sr-only" htmlFor="answer-input">
@@ -73,14 +82,14 @@ export const Exercise = () => {
                     />
                     <Button
                         extraCN={{ isPrimary: true }}
-                        disabled={status !== ExerciseStatus.idle || !answer.value?.trim()}
+                        disabled={isSolved || !answer.value?.trim()}
                         label={"Check"}
                         type={"submit"}
                     />
                 </Form>
             )}
 
-            {status !== ExerciseStatus.idle && (
+            {isSolved && (
                 <Stack extraCN={{ isOutline: true }}>
                     <strong className={"align-center"}>{capitalize(status)}</strong>
                     <div className={"align-center"}>The correct answer is <strong>{exercise.expected}</strong></div>
