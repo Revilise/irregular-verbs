@@ -1,5 +1,5 @@
 import { Exercise } from "@features/exercise";
 
-export const ExercisePage = () => {
+export default function ExercisePage() {
   return <Exercise />;
-};
+}

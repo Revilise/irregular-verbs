@@ -1,7 +1,7 @@
 import { useBEM } from "@shared/lib";
 import type { FC } from "react";
 import type { IFooter } from "@shared/ui/footer/config/types.ts";
-import { IRREGULAR_VERBS } from "@data/verbs.ts";
+import { IRREGULAR_VERBS } from "@shared/const/verbs.ts";
 
 export const Footer: FC<IFooter> = ({ extraCN, utilCN }) => {
   const { bem } = useBEM("footer");

@@ -43,7 +43,7 @@ export const Exercise = () => {
       extraCN={{ isSecondary: true }}
       utilCN={[isAnimate && "isFadeTransition"]}
     >
-      <h3 className={"h3"}>{exercise.title}</h3>
+      <h2 className={"h3"}>{exercise.title}</h2>
 
       <Stack>
         <div dangerouslySetInnerHTML={{ __html: exercise.description }} />

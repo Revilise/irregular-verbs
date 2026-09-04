@@ -1,4 +1,4 @@
-import { IRREGULAR_VERBS } from "@data/verbs.ts";
+import { IRREGULAR_VERBS } from "@shared/const/verbs.ts";
 import { random } from "@shared/lib/utils/random.ts";
 import {
   AnswerType,
