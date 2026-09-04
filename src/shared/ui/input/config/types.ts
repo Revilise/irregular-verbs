@@ -13,4 +13,3 @@ export interface IInput extends IComponent {
   spellCheck?: HTMLInput["spellCheck"];
   type?: HTMLInput["type"];
 }
-

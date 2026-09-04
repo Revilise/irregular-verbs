@@ -1,4 +1,4 @@
 export enum CheckerType {
-    checkbox = "checkbox",
-    radio = "radio"
+  checkbox = "checkbox",
+  radio = "radio",
 }

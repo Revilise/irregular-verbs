@@ -1,71 +1,72 @@
 .checker {
-    --checkerInputDisplay: none;
-    --checkerTransition: all .2s;
-    --checkerTransform: none;
-    --checkerOpacity: 0;
-    --checkerBorderWidth: 1px;
-    --checkerBorderRad: .5rem;
+  --checkerInputDisplay: none;
+  --checkerTransition: all 0.2s;
+  --checkerTransform: none;
+  --checkerOpacity: 0;
+  --checkerBorderWidth: 1px;
+  --checkerBorderRad: 0.5rem;
 
-    --checkerPadX: 1rem;
-    --checkerPadY: .5rem;
+  --checkerPadX: 1rem;
+  --checkerPadY: 0.5rem;
 
-    --checkerCurBg: var(--checkerBg);
-    --checkerBg: var(--color-white);
-    --checkerHoverBg: var(--color-indigo-500-alpha-10);
-    --checkerCheckedBg: var(--color-indigo-500-alpha-45);
-    --checkerActiveBg: var(--color-indigo-500-alpha-45);
-    --checkerDisabledBg: var(--color-white);
+  --checkerCurBg: var(--checkerBg);
+  --checkerBg: var(--color-white);
+  --checkerHoverBg: var(--color-indigo-500-alpha-10);
+  --checkerCheckedBg: var(--color-indigo-500-alpha-45);
+  --checkerActiveBg: var(--color-indigo-500-alpha-45);
+  --checkerDisabledBg: var(--color-white);
 
-    --checkerCurColor: var(--checkerColor);
-    --checkerColor: var(--color-slate-700);
-    --checkerHoverColor: var(--color-slate-700);
-    --checkerCheckedColor: var(--color-slate-50);
-    --checkerActiveColor: var(--color-slate-700);
-    --checkerDisabledColor: var(--color-white);
+  --checkerCurColor: var(--checkerColor);
+  --checkerColor: var(--color-slate-700);
+  --checkerHoverColor: var(--color-slate-700);
+  --checkerCheckedColor: var(--color-slate-50);
+  --checkerActiveColor: var(--color-slate-700);
+  --checkerDisabledColor: var(--color-white);
 
-    --checkerCurBorderColor: var(--checkerBorderColor);
-    --checkerBorderColor: var(--color-slate-200);
-    --checkerHoverBorderColor: var(--color-slate-200);
-    --checkerCheckedBorderColor: var(--color-slate-200);
-    --checkerActiveBorderColor: var(--color-slate-200);
-    --checkerDisabledBorderColor: var(--color-slate-200);
+  --checkerCurBorderColor: var(--checkerBorderColor);
+  --checkerBorderColor: var(--color-slate-200);
+  --checkerHoverBorderColor: var(--color-slate-200);
+  --checkerCheckedBorderColor: var(--color-slate-200);
+  --checkerActiveBorderColor: var(--color-slate-200);
+  --checkerDisabledBorderColor: var(--color-slate-200);
 
-    background: var(--checkerCurBg);
-    color: var(--checkerCurColor);
-    border: var(--checkerBorderWidth) solid var(--checkerCurBorderColor);
-    
-    transition: var(--checkerTransition);
-    padding-block: var(--checkerPadY);
-    padding-inline: var(--checkerPadX);
-    border-radius: var(--checkerBorderRad);
+  background: var(--checkerCurBg);
+  color: var(--checkerCurColor);
+  border: var(--checkerBorderWidth) solid var(--checkerCurBorderColor);
 
-    &__input {
-        display: var(--checkerInputDisplay);
-    }
+  transition: var(--checkerTransition);
+  padding-block: var(--checkerPadY);
+  padding-inline: var(--checkerPadX);
+  border-radius: var(--checkerBorderRad);
 
-    &__label {
-        color: inherit;
-    }
+  &__input {
+    display: var(--checkerInputDisplay);
+  }
 
-    &:has(:checked) {
-        --checkerCurBg: var(--checkerCheckedBg);
-        --checkerCurColor: var(--checkerCheckedColor);
-        --checkerCurBorderColor: var(--checkerCheckedBorderColor);
-    }
+  &__label {
+    color: inherit;
+  }
 
-    &:has(:disabled) {
-        --checkerCurBg: var(--checkerDisabledBg);
-        --checkerCurColor: var(--checkerDisabledColor);
-        --checkerCurBorderColor: var(--checkerDisabledBorderColor);
+  &:has(:checked) {
+    --checkerCurBg: var(--checkerCheckedBg);
+    --checkerCurColor: var(--checkerCheckedColor);
+    --checkerCurBorderColor: var(--checkerCheckedBorderColor);
+  }
 
-        --checkerOpacity: .6;
-    }
+  &:has(:disabled) {
+    --checkerCurBg: var(--checkerDisabledBg);
+    --checkerCurColor: var(--checkerDisabledColor);
+    --checkerCurBorderColor: var(--checkerDisabledBorderColor);
 
-    &:active, &:has(:active) {
-        --checkerCurBg: var(--checkerActiveBg);
-        --checkerCurColor: var(--checkerActiveColor);
-        --checkerCurBorderColor: var(--checkerActiveBorderColor);
+    --checkerOpacity: 0.6;
+  }
 
-        --checkerTransform: scale(1.15);
-    }
+  &:active,
+  &:has(:active) {
+    --checkerCurBg: var(--checkerActiveBg);
+    --checkerCurColor: var(--checkerActiveColor);
+    --checkerCurBorderColor: var(--checkerActiveBorderColor);
+
+    --checkerTransform: scale(1.15);
+  }
 }
