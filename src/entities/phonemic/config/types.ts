@@ -1,4 +1,4 @@
-import type { IrregularVerb } from "@data/verbs.ts";
+import type { IrregularVerb } from "@shared/const/verbs.ts";
 
 export interface PhonemicProps {
   verb: IrregularVerb;

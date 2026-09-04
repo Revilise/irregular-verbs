@@ -1,12 +1,14 @@
-import "@app/style/index.pcss";
-
+import { lazy, Suspense } from "react";
 import { Layout } from "@shared/ui/layout";
-import { ExercisePage } from "../pages/exercise.tsx";
+
+const ExercisePage = lazy(() => import("../pages/exercise.tsx"));
 
 export default function App() {
   return (
     <Layout>
-      <ExercisePage />
+      <Suspense>
+        <ExercisePage />
+      </Suspense>
     </Layout>
   );
 }
