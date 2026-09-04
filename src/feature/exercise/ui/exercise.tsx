@@ -1,4 +1,4 @@
-import {type FormEvent, useState} from "react";
+import { type FormEvent, useState } from "react";
 import {useExercise} from "../model/hook.ts";
 import {AnswerType} from "../config/types.ts";
 
@@ -13,7 +13,7 @@ import {capitalize} from "@shared/lib/utils/text.ts";
 
 export const Exercise = () => {
     const { exercise, answer, options, submit, status, refresh, isSolved } = useExercise();
-    const [isAnimate, setIsAnimate] = useState<boolean>(false);
+    const [ isAnimate, setIsAnimate ] = useState<boolean>(false);
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault();

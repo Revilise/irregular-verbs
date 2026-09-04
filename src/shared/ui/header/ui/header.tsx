@@ -1,16 +1,16 @@
 import {useBEM} from "@shared/lib";
 import type {IHeader} from "@shared/ui/header/config/types.ts";
 import type {FC} from "react";
+import { useScore } from "@shared/lib/score";
 
 export const Header: FC<IHeader> = ({
   extraCN,
   utilCN,
   title,
   subtitle,
-  score
 }) => {
   const { bem } = useBEM("header");
-  const safeScore = score ?? { right: 0, total: 0 };
+  const { score } = useScore();
 
   return (
      <header className={bem("", extraCN, utilCN)}>
@@ -19,11 +19,11 @@ export const Header: FC<IHeader> = ({
 
        <div className={bem("stats")}>
          <span className={bem("score")}>
-           Score: {safeScore.right}/{safeScore.total}
+           Score: {score.right}/{score.total}
          </span>
-         {safeScore.total > 0 && (
+         {score.total > 0 && (
             <span className={bem("pct")}>
-             {Math.round((100 * safeScore.right) / safeScore.total)}% correct
+             {Math.round((100 * score.right) / score.total)}% correct
             </span>
          )}
        </div>
