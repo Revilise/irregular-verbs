@@ -6,7 +6,7 @@
 
   --btnPadX: 1rem;
   --btnPadY: 0.65rem;
-  --btnBorderRad: .5rem;
+  --btnBorderRad: 0.5rem;
   --btnBorderWidth: 1px;
 
   --btnCurColor: var(--btnColor);
@@ -31,7 +31,7 @@
   --btnOpacity: 1;
   --btnCursor: pointer;
   --btnFilter: none;
-  --btnTransition: .2s all;
+  --btnTransition: 0.2s all;
 
   background: var(--btnCurBg);
   color: var(--btnCurColor);
@@ -82,10 +82,7 @@
 
     --btnColor: var(--color-gray-900);
 
-    --btnTransition:
-      border-color 0.15s,
-      background 0.15s,
-      transform 0.08s;
+    --btnTransition: border-color 0.15s, background 0.15s, transform 0.08s;
 
     &:active:not(:disabled) {
       transform: scale(0.99);

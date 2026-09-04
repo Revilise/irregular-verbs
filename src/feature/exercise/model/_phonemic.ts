@@ -1,28 +1,27 @@
 import { Exercise } from "./exercise.ts";
 import { capitalize } from "@shared/lib/utils/text.ts";
-import {randomSequence, shuffle} from "@shared/lib/utils/random.ts";
+import { randomSequence, shuffle } from "@shared/lib/utils/random.ts";
 
 export class PhonemicExercise extends Exercise {
+  static defaultCfg = {
+    type: "phonemic",
+    title: "Guess the verb (infinitive)",
+  };
 
-    static defaultCfg = {
-        type: "phonemic",
-        title: "Guess the verb (infinitive)"
-    }
+  constructor() {
+    super(PhonemicExercise.defaultCfg);
+    this.expected = this.verb.v1;
+  }
 
-    constructor() {
-        super(PhonemicExercise.defaultCfg);
-        this.expected = this.verb.v1;
-    }
+  get description(): string {
+    return `${capitalize(this.answer)} what is this verb: <strong>${this.verb.ipa}</strong>`;
+  }
 
-    get description(): string {
-        return `${capitalize(this.answer)} what is this verb: <strong>${this.verb.ipa}</strong>`;
-    }
+  get options(): string[] {
+    const { v1 } = this.verb;
+    const randoms = randomSequence({ max: 3, count: 3 });
+    const options = randoms.map((i) => this.verb.options[i]);
 
-    get options(): string[] {
-        const { v1 } = this.verb;
-        const randoms = randomSequence({ max: 3, count: 3 });
-        const options = randoms.map(i => this.verb.options[i]);
-
-        return shuffle([ v1, ...options ]);
-    }
+    return shuffle([v1, ...options]);
+  }
 }

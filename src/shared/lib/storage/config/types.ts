@@ -1,32 +1,32 @@
-export type CookieSameSite = 'Strict' | 'Lax' | 'None';
+export type CookieSameSite = "Strict" | "Lax" | "None";
 
 export type CookieStorageOptions = {
-    /**
-     * Дата истечения cookie.
-     * Если передать число — оно трактуется как количество секунд от текущего момента.
-     */
-    expires?: Date | number;
+  /**
+   * Дата истечения cookie.
+   * Если передать число — оно трактуется как количество секунд от текущего момента.
+   */
+  expires?: Date | number;
 
-    /**
-     * Путь, на котором cookie будет доступна.
-     * Обычно используется `/`.
-     */
-    path?: string;
+  /**
+   * Путь, на котором cookie будет доступна.
+   * Обычно используется `/`.
+   */
+  path?: string;
 
-    /**
-     * Домен, для которого доступна cookie.
-     * Например: `.example.com`.
-     */
-    domain?: string;
+  /**
+   * Домен, для которого доступна cookie.
+   * Например: `.example.com`.
+   */
+  domain?: string;
 
-    /**
-     * Передавать cookie только по HTTPS.
-     * Для SameSite=None это обязательно в современных браузерах.
-     */
-    secure?: boolean;
+  /**
+   * Передавать cookie только по HTTPS.
+   * Для SameSite=None это обязательно в современных браузерах.
+   */
+  secure?: boolean;
 
-    /**
-     * Ограничение отправки cookie при межсайтовых запросах.
-     */
-    sameSite?: CookieSameSite;
+  /**
+   * Ограничение отправки cookie при межсайтовых запросах.
+   */
+  sameSite?: CookieSameSite;
 };

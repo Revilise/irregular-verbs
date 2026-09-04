@@ -8,19 +8,18 @@ export const Form: FC<IForm> = ({
   disabled,
   onSubmit,
   onChange,
-  children
+  children,
 }) => {
   const { bem } = useBEM("form");
 
   return (
     <form
-        className={bem("", extraCN, utilCN)}
-        onSubmit={onSubmit}
-        onChange={onChange}
-        aria-disabled={disabled}
+      className={bem("", extraCN, utilCN)}
+      onSubmit={onSubmit}
+      onChange={onChange}
+      aria-disabled={disabled}
     >
       {children}
     </form>
   );
 };
-

@@ -1,6 +1,6 @@
-import {useBEM} from "@shared/lib";
-import type {IButton} from "@shared/ui/button/config/types.ts";
-import type {FC} from "react";
+import { useBEM } from "@shared/lib";
+import type { IButton } from "@shared/ui/button/config/types.ts";
+import type { FC } from "react";
 
 export const Button: FC<IButton> = ({
   extraCN,
@@ -13,13 +13,13 @@ export const Button: FC<IButton> = ({
   const { bem } = useBEM("btn");
 
   return (
-     <button
-        className={bem("", extraCN, utilCN)}
-        onClick={onClick}
-        disabled={disabled}
-        type={type}
-     >
-       {label}
-     </button>
-  )
-}
+    <button
+      className={bem("", extraCN, utilCN)}
+      onClick={onClick}
+      disabled={disabled}
+      type={type}
+    >
+      {label}
+    </button>
+  );
+};

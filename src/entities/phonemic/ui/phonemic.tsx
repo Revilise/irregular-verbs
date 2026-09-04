@@ -1,10 +1,5 @@
 import type { FC } from "react";
-import type { IrregularVerb } from "@data/verbs.ts";
-
-
-export interface PhonemicProps {
-  verb: IrregularVerb;
-}
+import type { PhonemicProps } from "../config";
 
 export const Phonemic: FC<PhonemicProps> = ({ verb }) => {
   return (
@@ -17,4 +12,3 @@ export const Phonemic: FC<PhonemicProps> = ({ verb }) => {
     </div>
   );
 };
-

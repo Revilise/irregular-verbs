@@ -9,4 +9,3 @@ export interface IForm extends IComponent {
   children: ReactNode;
   disabled?: boolean;
 }
-

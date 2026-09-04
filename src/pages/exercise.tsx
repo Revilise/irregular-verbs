@@ -1,7 +1,5 @@
-import {Exercise} from "@features/exercise";
+import { Exercise } from "@features/exercise";
 
 export const ExercisePage = () => {
-    return (
-        <Exercise />
-    )
-}
+  return <Exercise />;
+};

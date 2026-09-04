@@ -13,14 +13,12 @@ const initialState: FormState = {
   value: "",
 };
 
-export const useFormStore = create<FormState & FormActions>(
-  (set, get) => ({
-    ...initialState,
-    setValue: (value) => set({ value }),
-    getState: () => get(),
-    reset: () => set(initialState)
-  }),
-);
+export const useFormStore = create<FormState & FormActions>((set, get) => ({
+  ...initialState,
+  setValue: (value) => set({ value }),
+  getState: () => get(),
+  reset: () => set(initialState),
+}));
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
-export const selectFormState = () => useFormStore(state => state);
+export const selectFormState = () => useFormStore((state) => state);
