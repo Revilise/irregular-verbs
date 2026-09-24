@@ -7,12 +7,12 @@ export const exerciseHandlers = [
         url: "/exercise/generate",
         method: "get",
         resp: getRandomExerciseResp,
-        delay: 1200
+        delay: 300
     }),
     createMockHandler({
         url: "/exercise/check",
         method: "post",
         resp: checkExerciseResp,
-        delay: 500
+        delay: 100
     })
 ]

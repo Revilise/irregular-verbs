@@ -42,10 +42,9 @@ export const Exercise = () => {
   };
 
   const onNextClick = async () => {
-    startAnimation();
-
+    await startAnimation(300);
     await loadNextExercise();
-    finishAnimation(600);
+    await finishAnimation(300);
   };
 
   if (error && !exercise) {

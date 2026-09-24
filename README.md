@@ -14,6 +14,36 @@ npm run setup
 
 ## Запуск
 
+### Docker
+
+Запуск через Docker Compose из корня проекта:
+
+```sh
+docker compose up -d --build
+```
+
+Приложение доступно на http://localhost:3000. Для другого внешнего порта:
+`PORT=3001 docker compose up -d --build`.
+Адрес API фронтенда задаётся при сборке через `VITE_API` (по умолчанию `/api`).
+Просмотр логов: `docker compose logs -f app`. Остановка: `docker compose down`.
+
+Сборка и запуск без Compose:
+
+Из корня проекта:
+
+```sh
+docker build -t irregular-words .
+docker run --rm -p 3000:3000 irregular-words
+```
+
+Приложение доступно на http://localhost:3000. Образ включает API, фронтенд
+и публичный словарь; сервер запускается от пользователя `node`.
+Локальные `.env` не включаются в образ. Адрес API для фронтенда можно задать
+при сборке: `docker build --build-arg VITE_API=/api -t irregular-words .`.
+Для другого порта сервера: `docker run --rm -e PORT=3001 -p 3001:3001 irregular-words`.
+
+### Локально
+
 ```sh
 npm start
 ```

@@ -2,3 +2,4 @@
 /.nx/
 .DS_Store
 *.tsbuildinfo
+.idea

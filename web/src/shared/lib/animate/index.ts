@@ -8,14 +8,14 @@ export function useAnimate({ phases, defaultPhase = "complete" }: {
 }) {
     const [phase, setPhase] = useState<string>(defaultPhase);
 
-    function start(delay: number = 0) {
+    function start(delay: number = 0): Promise<void> {
         setPhase(phases.start);
-        if (delay > 0) setTimeout(finish, delay);
+        return new Promise(resolve => setTimeout(resolve, delay));
     }
 
     function finish(delay: number = 0) {
-        setPhase(phases.finish);
-        if (delay > 0) setTimeout(complete, delay);
+      setPhase(phases.finish);
+      return new Promise(resolve => setTimeout(resolve, delay));
     }
 
     function complete() {

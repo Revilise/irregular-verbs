@@ -14,7 +14,7 @@ type Result<TResult, TPayload> = {
     data: TResult | null,
     error: Error | null,
     isFetching: boolean,
-    fetch(...args: FetchArguments<TPayload>): Promise<void>,
+    fetch(...args: FetchArguments<TPayload>): Promise<TResult | void | undefined>,
     reset(): void,
 }
 
@@ -33,12 +33,11 @@ export function useClient<TResponse, TPayload = undefined>(fetcher: Fetcher<TRes
         setError(null);
         setController(controller);
 
-        // The public fetch signature requires payload unless TPayload is undefined.
-        // Options also prevents automatic requests when payload is required.
         return fetcher({ payload: payload as TPayload, signal: controller.signal })
             .then(resp => {
                 if (!controller.signal.aborted) {
                     setData(resp);
+                    return resp;
                 }
             })
             .catch(error => {

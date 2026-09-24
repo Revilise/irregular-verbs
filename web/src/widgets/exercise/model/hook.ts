@@ -5,6 +5,7 @@ import { useClient } from "@shared/api/hook.ts";
 import { checkExercise } from "../api/check-exercise";
 import { getRandomExercise } from "../api/get-random-exercise";
 import type {ExerciseDto, ExerciseCheckResultDto, ExerciseCheckDto} from "../api/types.ts";
+import { useScore } from "@shared/lib/score";
 
 interface UseExerciseResult {
   exercise: ExerciseDto | null;
@@ -36,22 +37,25 @@ export function useExercise({ defaultExercise }: { defaultExercise?: ExerciseDto
   } = useClient<ExerciseCheckResultDto, ExerciseCheckDto>(checkExercise, { immediately: false })
 
   const [userAnswer, setUserAnswer] = useState<string>("");
+  const { updateScore } = useScore();
 
   async function submitAnswer() {
     if (exercise && userAnswer.trim().length) {
-      return fetchCheckResult({
+      const resp = await fetchCheckResult({
         type: exercise.type,
         dictionary_id: exercise.dictionary_id,
         target_form: exercise.target_form,
         answer: userAnswer,
       });
+
+      if (resp) updateScore(resp?.correct);
     }
   }
 
   async function loadNextExercise() {
     await fetchExercise();
     resetCheckResult();
-    setUserAnswer("")
+    setUserAnswer("");
   }
 
   return {
