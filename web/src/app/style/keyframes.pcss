@@ -1,0 +1,35 @@
+
+@keyframes fade-start {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes fade-end {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.isFadeStart {
+  animation: fade-start .6s forwards;
+}
+
+.isFadeEnd {
+  animation: fade-end .6s forwards;
+}

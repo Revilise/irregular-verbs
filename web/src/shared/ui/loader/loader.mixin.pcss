@@ -1,0 +1,22 @@
+@define-mixin loader $size: 1rem, $color: currentColor, $background: transparent {
+  &:before {
+    content: "";
+    width: $size;
+    border: 2px dotted $color;
+    position: absolute;
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    height: calc($size / 2);
+    width: calc($size * 1.25);
+    background: $background;
+    opacity: .8;
+    border-radius: 25%;
+    transform-origin: 50% 50%;
+    animation: spin 2s infinite linear;
+  }
+}

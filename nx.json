@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "namedInputs": {
+    "default": [
+      "{projectRoot}/**/*",
+      "!{projectRoot}/dist/**/*",
+      "!{projectRoot}/node_modules/**/*",
+      "!{projectRoot}/*.tsbuildinfo",
+      "{workspaceRoot}/package-lock.json"
+    ]
+  },
+  "analytics": false
+}

@@ -1,77 +1,74 @@
-# Demo
+# Irregular Words
 
-https://revilise-irregular-verbs-013a.twc1.net/
+NestJS API в `api/`, React/Vite в `web/`. Nx управляет сборкой и запуском;
+у приложений остаются собственные `package.json` и lock-файлы.
 
-# React + TypeScript + Vite
+## Установка
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Используйте Node.js 24 LTS.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```sh
+npm ci
+npm run setup
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Запуск
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+### Docker
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+Запуск через Docker Compose из корня проекта:
+
+```sh
+docker compose up -d --build
 ```
+
+Приложение доступно на http://localhost:3000. Для другого внешнего порта:
+`PORT=3001 docker compose up -d --build`.
+Адрес API фронтенда задаётся при сборке через `VITE_API` (по умолчанию `/api`).
+Просмотр логов: `docker compose logs -f app`. Остановка: `docker compose down`.
+
+Сборка и запуск без Compose:
+
+Из корня проекта:
+
+```sh
+docker build -t irregular-words .
+docker run --rm -p 3000:3000 irregular-words
+```
+
+Приложение доступно на http://localhost:3000. Образ включает API, фронтенд
+и публичный словарь; сервер запускается от пользователя `node`.
+Локальные `.env` не включаются в образ. Адрес API для фронтенда можно задать
+при сборке: `docker build --build-arg VITE_API=/api -t irregular-words .`.
+Для другого порта сервера: `docker run --rm -e PORT=3001 -p 3001:3001 irregular-words`.
+
+### Локально
+
+```sh
+npm start
+```
+
+Nx сначала собирает API и web, затем запускает API. Сервер отдаёт готовый
+`web/dist` на http://localhost:3000, API доступен по `/api`, публичные файлы —
+по `/public`. Порт можно изменить: `PORT=3001 npm start`.
+
+Эквивалентная команда: `npx nx run api:serve`.
+
+```sh
+npm run build       # Только сборка обоих приложений
+npm run build:start # Сборка обоих приложений, затем запуск сервера с фронтендом
+npm run start:dev   # Сборка web, затем API с перезапуском при изменениях
+```
+
+В `start:dev` web собирается один раз. После изменения фронтенда выполните
+`npx nx build web` и обновите страницу либо перезапустите команду.
+
+По умолчанию фронтенд обращается к `/api` на том же сервере. `VITE_API` в
+окружении или `web/.env` переопределяет адрес во время сборки. Для совместного
+запуска задайте `VITE_API=/api` или удалите это переопределение.
+
+Сборки кешируются локально в `.nx/`. Для принудительной пересборки:
+`npm run build -- --skip-nx-cache`.
+
+Старый клиентский модуль `web/src/feature/_exercise` исключён из TypeScript-сборки:
+он использует удалённый локальный словарь; актуальный модуль — `widgets/exercise`.
