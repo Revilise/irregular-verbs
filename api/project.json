@@ -1,0 +1,56 @@
+{
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "api",
+  "projectType": "application",
+  "sourceRoot": "api/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": [
+        "default"
+      ],
+      "outputs": [
+        "{projectRoot}/dist",
+        "{projectRoot}/tsconfig.build.tsbuildinfo"
+      ],
+      "options": {
+        "command": "npm run build",
+        "cwd": "api"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "continuous": true,
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": [
+            "api",
+            "web"
+          ]
+        }
+      ],
+      "options": {
+        "command": "npm run start:prod",
+        "cwd": "api"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "continuous": true,
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": [
+            "web"
+          ]
+        }
+      ],
+      "options": {
+        "command": "npm run start:dev",
+        "cwd": "api"
+      }
+    }
+  }
+}
