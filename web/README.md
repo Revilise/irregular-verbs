@@ -1,77 +1,72 @@
-# Demo
+# Irregular Words Web
 
-https://revilise-irregular-verbs-013a.twc1.net/
+Интерфейс тренажёра на React 19, TypeScript и Vite. Получает упражнение, показывает текстовое поле или варианты ответа, отправляет ответ на проверку и позволяет перейти к следующему заданию. Счёт хранится в Zustand и сохраняется в cookie браузера.
 
-# React + TypeScript + Vite
+## Разработка интерфейса
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Требуется Node.js 24. Команды ниже выполняются из каталога `web/`:
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```sh
+npm ci
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Откройте адрес, напечатанный Vite в терминале. Из корня репозитория эквивалентная команда — `npm run dev --prefix web`.
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+В режиме `development` автоматически запускается Mock Service Worker (MSW). Он перехватывает запросы генерации и проверки упражнений, поэтому для разработки интерфейса сервер не нужен.
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+Моки возвращают фиксированное задание, а проверка всегда возвращает `correct: true`. Этот режим предназначен для работы над интерфейсом; реальная генерация и проверка доступны при совместном запуске с API.
+
+## Работа с настоящим API
+
+Из корня репозитория после установки зависимостей:
+
+```sh
+npm start
 ```
+
+Команда собирает оба приложения и запускает NestJS. Откройте http://localhost:3000. В production-сборке MSW не запускается, запросы идут к `/api` на том же сервере.
+
+Для разработки API с собранным интерфейсом используйте из корня `npm run api:dev`. После изменения фронтенда выполните `npx nx build web` и обновите страницу.
+
+Подробнее об установке и Docker — в [корневом README](../README.md), о контрактах запросов — в [API README](../api/README.md).
+
+## Адрес API
+
+`VITE_API` задаёт базовый адрес запросов; по умолчанию используется `/api`. Переменную можно передать через окружение или файл `web/.env`:
+
+```dotenv
+VITE_API=/api
+```
+
+Значение подставляется во время сборки. После изменения переменной пересоберите фронтенд; для dev-сервера перезапустите Vite.
+
+В Vite не настроен прокси, а в API не включён CORS. Для подключения с другого origin потребуется соответствующая настройка сервера или прокси. Само изменение `VITE_API` не отключает моки в режиме `development`.
+
+## Команды
+
+Выполняются из `web/`:
+
+| Команда | Назначение |
+| --- | --- |
+| `npm run dev` | Vite с горячим обновлением и моками API |
+| `npm run build` | Проверка TypeScript и сборка в `dist/` |
+| `npm run preview` | Локальный просмотр готовой сборки |
+| `npm run lint` | Проверка ESLint |
+| `npm run format` | Форматирование файлов в `src/` через Prettier |
+
+Перед `preview` выполните `npm run build`. Preview раздаёт только фронтенд: при стандартном `/api` он не заменяет общий сервер NestJS. Отдельного скрипта тестирования в `web/package.json` нет.
+
+## Структура
+
+- `src/app/` — точка входа, инициализация MSW и глобальные стили.
+- `src/pages/` — страница упражнений.
+- `src/widgets/exercise/` — интерфейс упражнения, состояние, API-запросы и моки.
+- `src/shared/api/` — HTTP-клиент и хук запросов.
+- `src/shared/lib/msw/` — запуск и регистрация обработчиков MSW.
+- `src/shared/lib/score/` — счёт правильных ответов и общего числа попыток.
+- `src/shared/lib/storage/` — работа с cookie.
+- `src/shared/ui/` — общие компоненты интерфейса.
+- `public/` — статические ресурсы и Service Worker для моков.
+
+Стили написаны в `.pcss` и обрабатываются PostCSS. Алиасы импортов настроены в `vite.config.ts` и `tsconfig.app.json`.

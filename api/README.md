@@ -1,114 +1,104 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Irregular Words API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Сервер на NestJS и TypeScript. Предоставляет словарь неправильных глаголов, генерирует упражнения и проверяет ответы. Также раздаёт собранный фронтенд из `web/dist` и файлы из `api/public`.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Запуск
 
-## Description
+Требуется Node.js 24. Для запуска всего приложения следуйте [корневому README](../README.md).
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Команды ниже выполняются из каталога `api/`:
 
-## Project setup
-
-```bash
-$ npm install
+```sh
+npm ci
+npm run start:dev
 ```
 
-## Compile and run the project
+API доступен на `http://localhost:3000/api`. Порт задаётся переменной окружения: `PORT=3001 npm run start:dev`. Для отображения интерфейса предварительно соберите `web/`.
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```sh
+npm run build
+npm run start:prod
 ```
 
-## Run tests
+Сборка создаёт `dist/`, а `start:prod` запускает `dist/main.js`. Сохраняйте расположение каталогов `api/public` и `web/dist` относительно корня проекта: сервер использует эти пути для статических файлов.
 
-```bash
-# unit tests
-$ npm run test
+## Эндпоинты
 
-# e2e tests
-$ npm run test:e2e
+Все маршруты имеют префикс `/api`.
 
-# test coverage
-$ npm run test:cov
+| Метод | Путь | Результат |
+| --- | --- | --- |
+| GET | `/api/dictionary` | Массив записей словаря |
+| GET | `/api/dictionary/random` | Случайная запись |
+| GET | `/api/dictionary/:id` | Запись по строковому идентификатору; сервис возвращает `null`, если её нет |
+| GET | `/api/exercise/generate` | Случайное упражнение |
+| POST | `/api/exercise/check` | Результат проверки и правильный ответ |
+
+Запись словаря содержит `id`, формы `v1`, `v2`, `v3`, транскрипцию `ipa` и массив отвлекающих вариантов `options`.
+
+### Получение упражнения
+
+```sh
+curl http://localhost:3000/api/exercise/generate
 ```
 
-## Deployment
+Поля ответа:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+| Поле | Значение |
+| --- | --- |
+| `type` | `form` — форма глагола; `phonemic` — инфинитив по транскрипции |
+| `title` | Заголовок задания |
+| `description` | Текст задания с HTML-разметкой |
+| `dictionary_id` | Идентификатор записи словаря |
+| `target_form` | Индекс формы, передаваемый обратно при проверке |
+| `answer_type` | `write` — ввод текста; `choose` — выбор варианта |
+| `options` | Массив вариантов ответа; может быть пустым |
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Для задания `phonemic` используется текстовый ввод. Для `form` способ ответа выбирается случайно.
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+### Проверка ответа
+
+Передайте `type`, `dictionary_id` и `target_form` из полученного упражнения вместе с ответом пользователя. Пример тела запроса:
+
+```json
+{
+  "type": "form",
+  "dictionary_id": "0",
+  "target_form": 1,
+  "answer": "went"
+}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Отправляйте JSON на `/api/exercise/check` с заголовком `Content-Type: application/json`. Ответ содержит `correct` (boolean) и `answer` (строку с правильным ответом).
 
-## Observability
+Проверка использует точное сравнение строк: регистр и пробелы имеют значение. Для `form` индекс `0`, `1` или `2` соответствует `v1`, `v2` или `v3`; для `phonemic` ответ сравнивается с `v1`.
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+## Словарь и структура
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+Словарь хранится в [`public/dictionary/dictionary.data.json`](public/dictionary/dictionary.data.json) и загружается в память при инициализации модуля. После изменения файла перезапустите сервер. Случайный выбор ищет запись по числовому индексу, преобразованному в строку, поэтому сохраняйте последовательные `id` от `"0"` до `"N-1"`.
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+- `src/main.ts` — запуск сервера, порт и префикс API.
+- `src/packages/app/` — корневой модуль.
+- `src/packages/dictionary/` — контроллер, сервис, файловый репозиторий и CQRS-запросы.
+- `src/packages/exercise/` — генерация и проверка через стратегии `form` и `phonemic`.
+- `src/packages/web/` — раздача фронтенда и публичных файлов.
+- `src/shared/` — пути и общие утилиты.
 
-## Resources
+## Команды разработки
 
-Check out a few resources that may come in handy when working with NestJS:
+| Команда | Назначение |
+| --- | --- |
+| `npm start` | Запуск через Nest CLI |
+| `npm run start:dev` | Запуск с отслеживанием изменений |
+| `npm run start:debug` | Запуск с отладчиком и отслеживанием изменений |
+| `npm run build` | Компиляция TypeScript |
+| `npm run lint` | Проверка кода через Oxlint |
+| `npm run format` | Форматирование исходников и тестов через Prettier |
+| `npm test` | Однократный запуск Vitest |
+| `npm run test:watch` | Vitest в режиме наблюдения |
+| `npm run test:cov` | Тесты с покрытием |
+| `npm run test:e2e` | Запуск отдельной e2e-конфигурации |
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observer](https://observer.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Текущий e2e-тест в `test/app.e2e-spec.ts` остался от шаблона: импортирует отсутствующий `src/app.module.js` и ожидает `Hello World!` на `/`. Его нужно обновить перед использованием для проверки приложения.
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+В `main.ts` не включены CORS и глобальный `ValidationPipe`. Декораторы DTO сами по себе не обеспечивают валидацию входящих запросов. Фронтенд с настоящим API по умолчанию работает с одного origin через NestJS.
