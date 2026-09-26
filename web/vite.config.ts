@@ -13,7 +13,6 @@ export default defineConfig({
       "@app": path.resolve(__dirname, "src/app"),
       "@assets": path.resolve(__dirname, "src/assets"),
       "@data": path.resolve(__dirname, "src/data"),
-      "@entities": path.resolve(__dirname, "src/entities"),
       /** Repo dir is `src/feature`; alias name is plural. */
       "@features": path.resolve(__dirname, "src/feature"),
       "@shared": path.resolve(__dirname, "src/shared"),

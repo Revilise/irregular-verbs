@@ -10,7 +10,6 @@
       "@app/*": ["./src/app/*"],
       "@assets/*": ["./src/assets/*"],
       "@data/*": ["./src/data/*"],
-      "@entities/*": ["./src/entities/*"],
       "@features/*": ["./src/feature/*"],
       "@shared/*": ["./src/shared/*"],
       "@widgets/*": ["./src/widgets/*"]
