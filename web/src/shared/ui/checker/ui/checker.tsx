@@ -13,12 +13,22 @@ export const Checker: FC<IChecker> = ({
   value,
   type = "checkbox",
   label,
+  ref,
+  tabIndex,
+  onChange,
+  onKeyDown,
+  onFocus,
 }) => {
   const { bem } = useBEM("checker");
 
   return (
     <label className={bem("", extraCN, utilCN)}>
       <input
+        ref={ref}
+        tabIndex={tabIndex}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        onFocus={onFocus}
         className={bem("input")}
         type={type}
         id={id}
