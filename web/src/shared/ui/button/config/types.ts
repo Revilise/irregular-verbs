@@ -1,11 +1,13 @@
 import type { IComponent } from "@shared/types/component.ts";
-import type { ButtonHTMLAttributes } from "react";
+import type { ComponentPropsWithRef } from "react";
 
-type HTMLButtonElement = ButtonHTMLAttributes<HTMLButtonElement>;
+type ButtonProps = ComponentPropsWithRef<"button">;
 
 export interface IButton extends IComponent {
+  ref?: ButtonProps["ref"];
   label?: string;
   onClick?: () => void;
   disabled?: boolean;
-  type?: HTMLButtonElement["type"];
+  type?: ButtonProps["type"];
+  formId?: string;
 }

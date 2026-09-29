@@ -13,11 +13,13 @@ export const Input: FC<IInput> = ({
   autoComplete = "off",
   spellCheck = false,
   type = "text",
+  ref,
 }) => {
   const { bem } = useBEM("input");
 
   return (
     <input
+      ref={ref}
       id={id}
       className={bem("", extraCN, utilCN)}
       value={value}

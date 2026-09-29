@@ -1,9 +1,9 @@
 import type { IComponent } from "@shared/types/component.ts";
-import type { InputHTMLAttributes } from "react";
+import type { ComponentPropsWithRef, InputHTMLAttributes } from "react";
 
 type HTMLInput = InputHTMLAttributes<HTMLInputElement>;
 
-export interface IInput extends IComponent {
+export interface IInput extends IComponent, ComponentPropsWithRef<"input"> {
   id?: string;
   value?: HTMLInput["value"];
   onChange?: HTMLInput["onChange"];
