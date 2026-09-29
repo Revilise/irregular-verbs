@@ -69,10 +69,16 @@ export class FormStrategy extends BaseExerciseStrategy {
     questionForm: { value: string; version: number };
     answerWay: string;
   }) {
-    return `${capitalize(answerWay)} <strong>${expectedForm.version + 1} form</strong> of ${questionForm.value}`;
+    const formNames = [
+      'infinitive (V1)',
+      'past simple (V2)',
+      'past participle (V3)',
+    ];
+
+    return `Given: <strong>${questionForm.value}</strong> [${formNames[questionForm.version]}]. ${capitalize(answerWay)} its <strong>${formNames[expectedForm.version]}</strong>.`;
   }
 
   getTitle() {
-    return 'Guess another form of verb (infinitive)';
+    return 'Find the verb form';
   }
 }
