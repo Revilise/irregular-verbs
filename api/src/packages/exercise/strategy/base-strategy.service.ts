@@ -38,8 +38,10 @@ export class BaseExerciseStrategy implements IExerciseStrategy {
     exclude?: number,
   ): { value: string; version: number } {
     const { v1, v2, v3 } = dictionary;
-    const forms = [v1, v2, v3].filter((v, i) => i !== exclude);
+    const forms = [v1, v2, v3]
+      .map((value, version) => ({ value, version }))
+      .filter((form) => form.version !== exclude);
     const random = getRandom(0, forms.length);
-    return { value: forms[random], version: random };
+    return forms[random];
   }
 }

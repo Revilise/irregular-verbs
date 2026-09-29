@@ -37,10 +37,10 @@ export class PhonemicStrategy extends BaseExerciseStrategy {
   }
 
   getDescription({ answerWay, ipa }: { answerWay: string; ipa: string }) {
-    return `${capitalize(answerWay)} infinitive of this verb: <strong>${ipa}</strong>`;
+    return `IPA: <strong>${ipa}</strong>. ${capitalize(answerWay)} the verb’s <strong>infinitive</strong>`;
   }
 
   getTitle() {
-    return 'Guess the verb (infinitive)';
+    return 'Identify the verb from IPA';
   }
 }
